@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#12060a">
+<title>Reloj de Sesiones · Camilo Trading</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;900&display=swap">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<style>
+/* Camilo Trading: vidrio esmerilado sobre fondo rojo oscuro. Estado: abierta = verde, cerrada = rojo. */
+:root{--bg:#12060a;--vidrio:rgba(255,255,255,.07);--vidrio2:rgba(255,255,255,.14);--line:rgba(255,255,255,.16);--txt:#fff4f5;--mut:#d1a9af;--ok:#3ddc97;--off:#9a7a80;--rojo:#ff3b4e}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+body{padding:max(16px,env(safe-area-inset-top)) 16px max(20px,env(safe-area-inset-bottom));min-height:100vh;position:relative;overflow-x:hidden}
+body::before,body::after{content:"";position:fixed;z-index:-1;border-radius:50%;filter:blur(70px);pointer-events:none}
+body::before{width:380px;height:380px;left:-120px;top:-80px;background:radial-gradient(circle,#ff2a44 0%,rgba(255,42,68,0) 70%);opacity:.65}
+body::after{width:420px;height:420px;right:-160px;top:38%;background:radial-gradient(circle,#b8001f 0%,rgba(184,0,31,0) 70%);opacity:.7}
+main{max-width:460px;margin:0 auto}
+h1{font-size:15px;font-weight:500;color:var(--mut);margin:0 0 12px;letter-spacing:.06em;text-transform:uppercase}
+.marca{text-align:center;margin:2px 0 16px;font-family:"Cinzel",Georgia,serif}
+.t1{font-size:clamp(20px,6.2vw,26px);font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:#ffe9eb}
+.t2{font-size:clamp(26px,8.4vw,36px);font-weight:900;line-height:1.1;margin-top:2px;background:linear-gradient(to top,#7a0012 0%,#d6001c 20%,#ff3b4e 38%,#ffdfe2 56%,#ff3b4e 72%,#b30018 100%);background-size:100% 300%;background-position:0 var(--p,0%);transition:background-position 1s linear;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 12px rgba(255,30,60,.6));animation:brillo 3s ease-in-out infinite}
+@keyframes brillo{0%,100%{filter:drop-shadow(0 0 9px rgba(255,30,60,.5)) brightness(1)}50%{filter:drop-shadow(0 0 16px rgba(255,60,80,.8)) brightness(1.12)}}
+@media (prefers-reduced-motion:reduce){.t2{animation:none}}
+.card,.s,.n,.cal,.noticias,.calsub a,.calbtns a{background:linear-gradient(135deg,var(--vidrio2),var(--vidrio) 55%,rgba(255,255,255,.03));border:1px solid var(--line);-webkit-backdrop-filter:blur(16px) saturate(150%);backdrop-filter:blur(16px) saturate(150%);box-shadow:0 10px 30px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.22)}
+.rel{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.card{border-radius:16px;padding:12px 14px}
+.lbl{font-size:17px;font-weight:700;color:var(--txt)}
+.hora{font-size:clamp(24px,7.4vw,34px);font-weight:600;font-variant-numeric:tabular-nums;line-height:1.15;margin-top:2px;white-space:nowrap}
+.hora small{font-size:.5em;font-weight:500;color:var(--mut);margin-left:3px}
+.fecha{font-size:13px;color:var(--mut);margin-top:2px}
+#cu{border-top:3px solid #ffc46b}
+#ny{border-top:3px solid #ff8fa3}
+#dif{font-size:12px;color:var(--mut);margin:10px 2px 14px}
+.ses{display:flex;flex-direction:column;gap:10px}
+.s{border-left:4px solid var(--c);border-radius:16px;padding:12px 14px}
+.top{display:flex;align-items:center;gap:10px}
+.dot{width:10px;height:10px;border-radius:50%;background:#ff5d6c;box-shadow:0 0 0 4px rgba(255,93,108,.22);flex:none}
+.on .dot{background:var(--ok);box-shadow:0 0 0 4px rgba(61,220,151,.25)}
+.nom{font-weight:600;font-size:16px}
+.rng{font-size:12px;color:var(--mut)}
+.rny{color:#ff9fb0;font-weight:600}
+.rcu{color:#ffc46b;font-weight:600}
+.der{margin-left:auto;text-align:right;flex:none}
+.est{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#ff8a96;background:rgba(255,59,78,.18);border:1px solid rgba(255,93,108,.55);border-radius:999px;padding:2px 10px;margin-bottom:3px}
+.on .est{color:var(--ok);background:rgba(61,220,151,.16);border-color:rgba(61,220,151,.55)}
+.cnt{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.seg{display:inline-block;min-width:3ch;text-align:right;animation:tic .5s ease-out}
+@keyframes tic{from{opacity:.25;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.urg{color:#ffd37a}
+.on .urg{color:#ff8a96}
+.urg .seg{animation:tic .5s ease-out,latido 1s ease-in-out infinite}
+@keyframes latido{50%{text-shadow:0 0 10px currentColor}}
+@media (prefers-reduced-motion:reduce){.seg,.urg .seg{animation:none}}
+.bar{height:5px;border-radius:3px;background:rgba(255,255,255,.14);margin-top:10px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--c);width:0}
+.noticias{display:block;margin-top:14px;text-align:center;text-decoration:none;color:var(--txt);border-radius:16px;padding:13px;font-weight:600}
+.noticias span{color:var(--rojo)}
+.nots{display:flex;flex-direction:column;gap:8px}
+.n{display:flex;gap:10px;align-items:center;border-left:4px solid var(--ic);border-radius:14px;padding:9px 12px}
+.n .h{font-variant-numeric:tabular-nums;font-size:13px;font-weight:600;min-width:64px}
+.n .m{font-size:12px;font-weight:600;color:var(--mut);min-width:34px}
+.n .t{flex:1;min-width:0;font-size:14px;overflow-wrap:anywhere}
+.n .d{font-size:11px;color:var(--mut);display:block}
+.n.pasada{opacity:.5}
+.cal{margin-top:12px;border-radius:16px;padding:12px 14px}
+.calt{font-weight:600;margin-bottom:8px}
+.calrep{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px;color:var(--mut);margin-bottom:10px}
+.calrep select{background:rgba(18,6,10,.7);color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:6px 8px;font-size:13px}
+.calbtns{display:flex;flex-direction:column;gap:8px}
+.calbtns a{display:block;text-align:center;text-decoration:none;color:var(--txt);border-left:4px solid var(--c);border-radius:12px;padding:10px;font-weight:600;font-size:14px;box-shadow:none}
+.calsub{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.calsub a{display:block;text-align:center;text-decoration:none;color:var(--txt);border-radius:12px;padding:10px;font-weight:600;font-size:14px;box-shadow:none}
+.calics{margin-top:8px;text-align:center;font-size:12px;color:var(--mut)}
+.vacio{font-size:13px;color:var(--mut);text-align:center;padding:10px}
+.pie{font-size:11px;color:var(--mut);text-align:center;margin-top:12px}
+</style>
+</head>
+<body>
+<main>
+<header class="marca"><div class="t1">Reloj de Sesiones</div><div class="t2">Camilo Trading</div></header>
+<div class="rel">
+<div class="card" id="cu"><div class="lbl">Texas</div><div class="hora" id="cuh">--:--:--</div><div class="fecha" id="cuf">&nbsp;</div></div>
+<div class="card" id="ny"><div class="lbl">Nueva York</div><div class="hora" id="nyh">--:--:--</div><div class="fecha" id="nyf">&nbsp;</div></div>
+</div>
+<div id="dif"></div>
+<div class="ses" id="ses"></div>
+<div class="cal">
+<div class="calt">Agregar a mi calendario</div>
+<label class="calrep">Repetir <select id="rep"><option value="siempre">Siempre (lun a vie)</option><option value="semana">Solo esta semana</option></select></label>
+<div class="calbtns" id="calbtns"></div>
+<div class="calsub">
+<a href="webcal://alwaysmejane-droid.github.io/camilo-trading/sesiones.ics">Apple Calendar</a>
+<a target="_blank" rel="noopener" href="https://outlook.live.com/calendar/0/addfromweb?url=https%3A%2F%2Falwaysmejane-droid.github.io%2Fcamilo-trading%2Fsesiones.ics&amp;name=Aperturas%20de%20mercado">Outlook</a>
+</div>
+<div class="calics">Apple y Outlook agregan las tres sesiones, siempre.</div>
+</div>
+<h1 style="margin-top:18px">Noticias de hoy (hora de NY)</h1>
+<div class="nots" id="nots"><div class="vacio">Cargando…</div></div>
+<a class="noticias" href="https://www.forexfactory.com/calendar" target="_blank" rel="noopener"><span>●</span> Calendario completo</a>
+<div class="pie">Sesiones en hora de Nueva York. Se actualiza sola.</div>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
