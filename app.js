@@ -3,7 +3,7 @@ var NY_ZONA = "America/New_York";
 var SESIONES = [
   {n: "Asia", a: 18 * 60, c: 4 * 60, col: "#ff7a59"},
   {n: "Londres", a: 3 * 60, c: 12 * 60, col: "#ff4d6d"},
-  {n: "Nueva York", a: 8 * 60, c: 17 * 60, col: "#ffb3a7"}
+  {n: "Nueva York", a: 9 * 60 + 30, c: 17 * 60, col: "#ffb3a7"}
 ];
 var CIERRE_SEMANA = 17 * 60;
 var APERTURA_SEMANA = 18 * 60;

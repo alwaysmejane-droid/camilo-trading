@@ -1,4 +1,4 @@
-var CACHE = "camilo-v1";
+var CACHE = "camilo-v2";
 var ARCHIVOS = ["./", "index.html", "app.js", "manifest.webmanifest", "icon.svg"];
 self.addEventListener("install", function (e) {
   e.waitUntil(caches.open(CACHE).then(function (c) { return c.addAll(ARCHIVOS); }));
